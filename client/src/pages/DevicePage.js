@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { data, useParams } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -7,7 +7,7 @@ import Image from 'react-bootstrap/Image';
 import bigStar from '../assets/bigStar.png';
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { fetchOneDevice } from "../http/deviceAPI";
+import { fetchOneDevice, addToBasket } from "../http/deviceAPI";
 
 const DevicePage = () => {
     const [device, setDevice] = useState({info: []});
@@ -16,6 +16,12 @@ const DevicePage = () => {
     useEffect(() => {
         fetchOneDevice(id).then(data => setDevice(data))
     }, [])
+
+    const addBasket = () => {
+        const formData = new FormData()
+        formData.append('deviceId', id)
+        addToBasket(formData).then(data => alert(`Товар ${device.name} был добавлен в Вашу корзину`))
+    }
 
     return (
         <Container className="mt-3">
@@ -37,7 +43,7 @@ const DevicePage = () => {
                         style={{width: 300, height: 300, fontSize: 32, border: '2px solid lightgray'}}
                     >
                         <h3>От: {device.price} руб.</h3>
-                        <Button variant={"outline-dark"}>Добавить в корзину</Button>
+                        <Button onClick={addBasket} variant={"outline-dark"}>Добавить в корзину</Button>
                     </Card>
                 </Col>
             </Row>

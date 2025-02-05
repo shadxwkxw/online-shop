@@ -1,16 +1,20 @@
-const {Basket} = require('../models/models')
+const {Basket, BasketDevice, Device} = require('../models/models')
 const ApiError = require('../error/ApiError')
 
 class BasketController {
-    async create(req, res) {
-        const {name} = req.body
-        const basket = await Basket.create({name})
+    async addToBasket(req, res, next) {
+        const user = req.user
+        const {deviceId} = req.body
+        const basket = await BasketDevice.create({basketId: user.id, deviceId: deviceId})
         return res.json(basket)
     }
 
-    async getAll (req, res) {
-        const baskets = await Basket.findAll()
-        return res.json(baskets)
+    async getBasketUser(req, res) {
+        const {id} = req.user
+        const basket = await BasketDevice.findAll({include: {
+            model: Device
+        }, where: {basketId: id}})
+        return res.json(basket)
     }
 
 }
