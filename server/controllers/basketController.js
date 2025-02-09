@@ -1,5 +1,4 @@
-const {Basket, BasketDevice, Device} = require('../models/models')
-const ApiError = require('../error/ApiError')
+const {BasketDevice, Device} = require('../models/models')
 
 class BasketController {
     async addToBasket(req, res, next) {

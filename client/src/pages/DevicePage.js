@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { data, useParams } from "react-router-dom";
-import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Image from 'react-bootstrap/Image';
-import bigStar from '../assets/bigStar.png';
-import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { fetchOneDevice, addToBasket } from "../http/deviceAPI";
+import Card from "react-bootstrap/Card";
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Image from 'react-bootstrap/Image';
+import Row from 'react-bootstrap/Row';
+import { useParams } from "react-router-dom";
+import bigStar from '../assets/bigStar.png';
+import { addToBasket, fetchOneDevice } from "../http/deviceAPI";
 
 const DevicePage = () => {
     const [device, setDevice] = useState({info: []});

@@ -1,9 +1,9 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
-import star from '../assets/star.png';
 import Image from "react-bootstrap/Image";
 import { useNavigate } from "react-router-dom";
+import star from '../assets/star.png';
 import { DEVICE_ROUTE } from "../utils/consts";
 
 const DeviceItem = ({device}) => {

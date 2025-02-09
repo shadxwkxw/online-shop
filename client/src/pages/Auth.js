@@ -1,14 +1,14 @@
+import { observer } from "mobx-react-lite";
 import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
-import Form from 'react-bootstrap/Form';
-import Container from "react-bootstrap/Container";
+import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card"
+import Container from "react-bootstrap/Container";
+import Form from 'react-bootstrap/Form';
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "../utils/consts";
-import { login, registration } from "../http/userAPI";
-import { observer } from "mobx-react-lite";
 import { Context } from "..";
+import { login, registration } from "../http/userAPI";
+import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "../utils/consts";
 
 const Auth = observer(() => {
     const {user} = useContext(Context);
@@ -26,12 +26,9 @@ const Auth = observer(() => {
                 data = await login(email, password);
             } else {
                 data = await registration(email, password); 
-            }
-            user.setUser(data)
+            }   
+            user.setUser(user)
             user.setIsAuth(true)
-            if (email === "52@mail.ru") {
-                user.setIsAdmin(true)
-            }
             history(SHOP_ROUTE)
         } catch (e) {
             alert(e.response.data.message)
