@@ -5,16 +5,17 @@ import Shop from './pages/Shop'
 import Auth from './pages/Auth'
 import DevicePage from './pages/DevicePage'
 
-export const authRoutes = [
+export const adminRoute = [
     {
         path: ADMIN_ROUTE,
         Component: Admin
-    },
-    
+    }
+]
+export const authRoute = [
     {
         path: BASKET_ROUTE,
         Component: Basket
-    }   
+    }
 ]
 
 export const publicRoutes = [

@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
-import { Card } from "react-bootstrap";
+import { Button, Card, Col } from "react-bootstrap";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { Context } from "..";
@@ -25,7 +25,6 @@ const Basket = observer(() => {
         })
         setTotalPrice(price)
     }, [basketDevice])
-
     console.table(basketDevice)
 
     return (
@@ -34,16 +33,19 @@ const Basket = observer(() => {
                 <Row className="mt-3">
                     <h2>Корзина</h2>
                     {basketDevice.map(device => (
-                        <Card key={device.id}>
+                        <Card key={device.id} className="mb-2">
                             <Row>
-                                <div className="col-md-4">
+                                <div className="col-md-3">
+                                    <img src={process.env.REACT_APP_API_URL + device.device.img} style={{width: '100px', height: '100px'}}/>
+                                </div>
+                                <div className="col-md-3">
                                     {device.device.name}
                                 </div>
-                                <div className="col-md-4">
+                                <div className="col-md-3">
                                     {device.device.price}
                                 </div>
-                                <div className="col-md-4">
-                                    <img src={process.env.REACT_APP_API_URL + device.device.img} style={{width: '50px'}}/>
+                                <div className="col-md-3">
+                                    <Button variant="outline-danger">Удалить</Button>
                                 </div>
                             </Row>
                         </Card>

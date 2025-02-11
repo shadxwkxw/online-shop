@@ -27,6 +27,11 @@ const Auth = observer(() => {
             } else {
                 data = await registration(email, password); 
             }   
+            if (data.role === 'ADMIN') {
+                user.setIsAdmin(true)
+            } else {
+                user.setIsAdmin(false)
+            }
             user.setUser(user)
             user.setIsAuth(true)
             history(SHOP_ROUTE)

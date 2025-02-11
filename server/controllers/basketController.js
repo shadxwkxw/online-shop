@@ -15,7 +15,6 @@ class BasketController {
         }, where: {basketId: id}})
         return res.json(basket)
     }
-
 }
 
 module.exports = new BasketController()
