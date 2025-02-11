@@ -17,7 +17,7 @@ const Basket = observer(() => {
             setBasketDevice(data)
         })
     }, [])
-
+    
     useEffect(() => {
         let price = 0
         basketDevice.forEach(item => {
@@ -26,7 +26,7 @@ const Basket = observer(() => {
         setTotalPrice(price)
     }, [basketDevice])
     console.table(basketDevice)
-
+    
     return (
         <div>
             <Container>

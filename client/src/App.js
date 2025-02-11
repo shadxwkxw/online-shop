@@ -27,8 +27,8 @@ const App = observer(() => {
                 height: '100vh',
                 width: '100vw',
             }}>
-            <Spinner animation={"border"} style={{ width: '4rem', height: '4rem' }}/>
-        </div> 
+                <Spinner animation={"border"} style={{ width: '4rem', height: '4rem' }}/>
+            </div> 
     )}
 
     return (

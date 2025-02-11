@@ -9,6 +9,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Context } from "..";
 import { login, registration } from "../http/userAPI";
 import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "../utils/consts";
+import { Spinner } from "react-bootstrap";
 
 const Auth = observer(() => {
     const {user} = useContext(Context);
@@ -16,10 +17,12 @@ const Auth = observer(() => {
     const history = useNavigate();
     const isLogin = location.pathname === LOGIN_ROUTE;
 
+    const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const click = async () => {
+        setLoading(true)
         try {
             let data;
             if (isLogin) {
@@ -37,6 +40,8 @@ const Auth = observer(() => {
             history(SHOP_ROUTE)
         } catch (e) {
             alert(e.response.data.message)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -73,8 +78,19 @@ const Auth = observer(() => {
                                 Есть аккаунт? <NavLink to={LOGIN_ROUTE} style={{textDecorationLine: 'none'}}>Авторизуйтесь</NavLink>
                             </div>
                             }
-                            <Button onClick={click} variant="outline-success" className="mt-3">
-                                {isLogin ? "Войти" : "Зарегистрироваться"}
+                            <Button 
+                                onClick={click} 
+                                disabled={loading} 
+                                variant="outline-success" 
+                                className="mt-3"
+                            >
+                                {loading ? (
+                                    
+                                    <Spinner animation={"border"}/>
+                                     
+                                ) : (
+                                    isLogin ? "Войти" : "Зарегистрироваться"
+                                )}
                             </Button>
                         </Col>
                     </Form>
