@@ -4,7 +4,7 @@ import { Button, Card, Col } from "react-bootstrap";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { Context } from "..";
-import { getBasket } from "../http/deviceAPI";
+import { getBasket, deleteFromBasket } from "../http/deviceAPI";
 
 const Basket = observer(() => {
     const {device} = useContext(Context)
@@ -26,6 +26,11 @@ const Basket = observer(() => {
         setTotalPrice(price)
     }, [basketDevice])
     console.table(basketDevice)
+
+    const removeDevice = (deviceId) => {
+        setBasketDevice(prevBasket => prevBasket.filter(device => device.deviceId !== deviceId));
+        deleteFromBasket(deviceId);
+    }
     
     return (
         <div>
@@ -45,7 +50,7 @@ const Basket = observer(() => {
                                     {device.device.price}
                                 </div>
                                 <div className="col-md-3">
-                                    <Button variant="outline-danger">Удалить</Button>
+                                    <Button onClick={() => removeDevice(device.deviceId)} variant="outline-danger">Удалить</Button>
                                 </div>
                             </Row>
                         </Card>

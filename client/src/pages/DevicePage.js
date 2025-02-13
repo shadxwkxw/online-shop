@@ -8,10 +8,11 @@ import Row from 'react-bootstrap/Row';
 import { useParams } from "react-router-dom";
 import bigStar from '../assets/bigStar.png';
 import { addToBasket, fetchOneDevice } from "../http/deviceAPI";
+import AddedToBasket from "../components/modals/AddedToBasket";
 
 const DevicePage = () => {
-    const [device, setDevice] = useState({info: []});
-    const {id} = useParams();
+    const [device, setDevice] = useState({info: []})
+    const {id} = useParams()
 
     useEffect(() => {
         fetchOneDevice(id).then(data => setDevice(data))
@@ -43,7 +44,12 @@ const DevicePage = () => {
                         style={{width: 300, height: 300, fontSize: 32, border: '2px solid lightgray'}}
                     >
                         <h3>От: {device.price} руб.</h3>
-                        <Button onClick={addBasket} variant={"outline-dark"}>Добавить в корзину</Button>
+                        <Button 
+                            variant={"outline-dark"}
+                            onClick={addBasket}
+                        >
+                            Добавить в корзину
+                        </Button>
                     </Card>
                 </Col>
             </Row>
