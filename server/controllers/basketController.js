@@ -19,13 +19,14 @@ class BasketController {
     async deleteFrombasket(req, res) {
         const {id} = req.user
         const {deviceId} = req.body
-        const deletedCount = await BasketDevice.destroy({
+        const basketItem = await BasketDevice.findOne({
             where: {
                 deviceId: deviceId,
                 basketId: id
             }
         })
-        return res.json(deletedCount)
+        await basketItem.destroy()
+        return res.json(basketItem)
     }
 }
 

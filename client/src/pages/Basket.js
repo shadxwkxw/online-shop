@@ -27,9 +27,18 @@ const Basket = observer(() => {
     }, [basketDevice])
     console.table(basketDevice)
 
-    const removeDevice = (deviceId) => {
-        setBasketDevice(prevBasket => prevBasket.filter(device => device.deviceId !== deviceId));
-        deleteFromBasket(deviceId);
+    const removeDevice = async (deviceId) => {
+        await deleteFromBasket(deviceId)
+        setBasketDevice(prevBasket => {
+            const indexToRemove =  prevBasket.findIndex(item => item.deviceId === deviceId)
+            if (indexToRemove === -1) {
+                return prevBasket
+            }
+            const newBasket = [...prevBasket]
+            newBasket.splice(indexToRemove, 1)
+
+            return newBasket
+        });
     }
     
     return (
