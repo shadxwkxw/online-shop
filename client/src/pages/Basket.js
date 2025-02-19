@@ -48,9 +48,9 @@ const Basket = observer(() => {
                     <h2>Корзина</h2>
                     {basketDevice.map(device => (
                         <Card key={device.id} className="mb-2">
-                            <Row>
+                            <Row className="align-items-center">
                                 <div className="col-md-3">
-                                    <img src={process.env.REACT_APP_API_URL + device.device.img} style={{width: '100px', height: '100px'}}/>
+                                    <img src={process.env.REACT_APP_API_URL + device.device.img} style={{width: '120px', height: '120px'}}/>
                                 </div>
                                 <div className="col-md-3">
                                     {device.device.name}
