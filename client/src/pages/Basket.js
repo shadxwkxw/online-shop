@@ -8,58 +8,85 @@ import { getBasket, deleteFromBasket } from "../http/deviceAPI";
 
 const Basket = observer(() => {
     const {device} = useContext(Context)
-    const [basketDevice, setBasketDevice] = useState([])
+    const [groupedBasket, setGroupedBasket] = useState({})
     const [totalPrice, setTotalPrice] = useState(0)
 
     useEffect(() => {
-        getBasket().then(data => {
-            device.setBaskets(data)
-            setBasketDevice(data)
-        })
+        fetchBasket()
     }, [])
-    
+
+    const fetchBasket = async () => {
+        try {
+            const data = await getBasket()
+            device.setBaskets(data)
+            groupDevices(data)
+        } catch (error) {
+            console.error("Ошибка получения корзины:", error)
+        }
+    }
+
+    const groupDevices = (basketItems) => {
+        const grouped = {}
+        basketItems.forEach(item => {
+            const deviceId = item.deviceId
+            if (grouped[deviceId]) {
+                grouped[deviceId].quantity += 1
+            } else {
+                grouped[deviceId] = {device: item.device, quantity: 1}
+            }
+        })
+        setGroupedBasket(grouped)
+    }
+
     useEffect(() => {
         let price = 0
-        basketDevice.forEach(item => {
-            price += item.device.price
-        })
+        Object.values(groupedBasket).forEach(item => {
+            price += item.device.price * item.quantity
+        });
         setTotalPrice(price)
-    }, [basketDevice])
-    console.table(basketDevice)
+    }, [groupedBasket])
 
     const removeDevice = async (deviceId) => {
-        await deleteFromBasket(deviceId)
-        setBasketDevice(prevBasket => {
-            const indexToRemove =  prevBasket.findIndex(item => item.deviceId === deviceId)
-            if (indexToRemove === -1) {
-                return prevBasket
-            }
-            const newBasket = [...prevBasket]
-            newBasket.splice(indexToRemove, 1)
+        try {
+            await deleteFromBasket(deviceId)
 
-            return newBasket
-        });
-    }
+            setGroupedBasket(prevGroupedBasket => {
+                const newGroupedBasket = {...prevGroupedBasket}
+                if (newGroupedBasket[deviceId]) {
+                    newGroupedBasket[deviceId].quantity -= 1
+                    if (newGroupedBasket[deviceId].quantity === 0) {
+                        delete newGroupedBasket[deviceId]
+                    }
+                }
+                return newGroupedBasket
+            })
+        } catch (error) {
+            console.error("Ошибка при удалении товара:", error)
+        }
+    };
     
     return (
         <div>
             <Container>
                 <Row className="mt-3">
                     <h2>Корзина</h2>
-                    {basketDevice.map(device => (
-                        <Card key={device.id} className="mb-2">
+                    {Object.entries(groupedBasket).map(([deviceId, item]) => (
+                        <Card key={deviceId} className="mb-2">
                             <Row className="align-items-center">
                                 <div className="col-md-3">
-                                    <img src={process.env.REACT_APP_API_URL + device.device.img} style={{width: '120px', height: '120px'}}/>
+                                    <img src={process.env.REACT_APP_API_URL + item.device.img} style={{ width: '120px', height: '120px' }} />
                                 </div>
                                 <div className="col-md-3">
-                                    {device.device.name}
+                                    {item.device.name}
                                 </div>
-                                <div className="col-md-3">
-                                    {device.device.price}
+                                <div className="col-md-2">
+                                    {item.device.price * item.quantity} руб.
                                 </div>
-                                <div className="col-md-3">
-                                    <Button onClick={() => removeDevice(device.deviceId)} variant="outline-danger">Удалить</Button>
+                                <div className="col-md-2">
+                                    Количество: {item.quantity}
+                                </div>
+                                <div className="col-md-2">
+                                    <Button onClick={() => removeDevice(deviceId)} variant="outline-danger">Удалить</Button>
                                 </div>
                             </Row>
                         </Card>
@@ -67,7 +94,7 @@ const Basket = observer(() => {
                     <h2>Итого: {totalPrice} рублей</h2>
                 </Row>
             </Container>
-        </div> 
+        </div>
     );
 });
 
